@@ -1,0 +1,30 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-20 10:38:47
+ * @LastEditTime: 2021-09-23 19:54:50
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \Lab\APPS\Lab1\Templates\select.html
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+    <form action="http://localhost:8080/select" method="post">
+        请输入你的姓名<input type="text" name="name" value="">
+        <button type="submit" name="提交" >
+    </form>
+        <h1>抽奖结果</h1>
+    <tr>
+        <td>获奖人姓名</td>
+        <td>获奖等级</td>
+    </tr>
+    {% for name, award in result_return.items()[-1:] %}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{ award }}</td>
+        </tr>
+    {% end %}
+</body>
+</html>

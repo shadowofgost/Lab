@@ -1,0 +1,20 @@
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>抽奖结果</h1>
+    <tr>
+        <td>获奖人姓名</td>
+        <td>获奖等级</td>
+    </tr>
+    <br>
+    {% for name, award in result_return.items() %}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{ award }}</td>
+        </tr>
+        <br>
+    {% end %}
+</body>
+</html>

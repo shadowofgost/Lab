@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>设置抽奖信息</title>
+	</head>
+	<body>
+        <form action="set_prize.php" method="post">
+            请输入奖项个数<input type="text" name="prize_number">
+			<button type="submit" name="continue"  onclick="set_prize()">继续</button>
+			
+        </form>
+		<script type="text/javascript">
+		function set_prize(){
+			var prize_number = document.getElementById("prize_number").value;
+			for (var i = 1; i <= prize_number; i++) {
+
+			}
+		}
+		</script>
+	</body>
+</html>

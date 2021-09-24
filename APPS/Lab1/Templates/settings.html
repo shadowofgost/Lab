@@ -1,0 +1,172 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>设置抽奖信息</title>
+	</head>
+	<body>
+		<form id="form" method="post" action="http://localhost:8080/">
+			请输入奖项个数<input
+				type="text"
+				name="prize_number"
+				id="prize_number"
+			/>
+			<button type="button" name="continue" onclick="set_prize()">
+				继续
+			</button>
+		</form>
+		<script type="text/javascript">
+			function set_prize() {
+				var prize_number = parseInt(
+					document.getElementById("prize_number").value
+				);
+				console.log(prize_number);
+				for (var i = 1; i <= prize_number; i++) {
+					var mytype,
+						TemO = document.getElementById("form");
+					var title = document.createElement("h4");
+					title.innerHTML = i + "等奖项数量设置";
+					TemO.appendChild(title);
+					var newInput = document.createElement("input");
+					newInput.setAttribute("type", "text");
+					newInput.setAttribute("name", "prize_" + i);
+					newInput.setAttribute("id", "prize_" + i);
+					newInput.setAttribute("value", "0");
+					newInput.setAttribute("onchange","validate_prize_number("+i+")");
+					TemO.appendChild(newInput);
+					var newline = document.createElement("br");
+					TemO.appendChild(newline);
+					var error= document.createElement("h4");
+					error.setAttribute("id", "prize_error_"+i);
+					TemO.appendChild(error);
+				}
+				var mytype,
+					TemO = document.getElementById("form");
+				var title = document.createElement("h4");
+					title.innerHTML = "参与抽奖人数设置";
+					TemO.appendChild(title);
+				var participant_numbers = document.createElement("input");
+				participant_numbers.setAttribute("type", "text");
+				participant_numbers.setAttribute("name", "participant_numbers");
+				participant_numbers.setAttribute("id", "participant_numbers");
+				participant_numbers.setAttribute("value", "0");
+				participant_numbers.setAttribute("onchange","validate_participant_numbers()");
+				TemO.appendChild(participant_numbers);
+				var participant_numbers_error= document.createElement("h4");
+				participant_numbers_error.setAttribute("id", "participant_numbers_error");
+				TemO.appendChild(participant_numbers_error);
+				var button = document.createElement("button");
+				button.setAttribute("type", "button");
+				button.setAttribute("name", "continue");
+				button.setAttribute("onclick", "set_participant()");
+				button.innerHTML = "继续";
+				TemO.appendChild(button);
+			}
+			function validate_prize_number(i) {
+				var prize_number = parseInt(document.getElementById("prize_"+i).value);
+				if (prize_number === 0) {
+					var prize_error = document.getElementById("prize_error_"+i);
+					prize_error.innerHTML = "奖项数量不为0";
+					return false;
+				}
+				if (Object.is(prize_number, NaN)) {
+					var prize_error = document.getElementById("prize_error_"+i);
+					prize_error.innerHTML = "请输入正确字符";
+					return false;
+				}
+				return true;
+			}
+			function validate_participant_numbers() {
+				var participant_numbers = parseInt(document.getElementById("participant_numbers").value);
+				if (participant_numbers === 0) {
+					var participant_numbers = document.getElementById("participant_numbers_error");
+					participant_numbers.innerHTML = "总人数不为0";
+					return false;
+				}
+				if (Object.is(participant_numbers, NaN)) {
+					var participant_numbers = document.getElementById("participant_numbers_error");
+					participant_numbers.innerHTML = "请输入正确字符";
+					return false;
+				}
+				return true;
+			}
+			function set_participant() {
+				var prize_number = parseInt(
+					document.getElementById("prize_number").value
+				);
+				var total_prize_number = 0;
+				var participant_numbers = parseInt(document.getElementById("participant_numbers").value);
+				for (var i = 1; i <= prize_number; i++) {
+					if (!(validate_prize_number(i))){
+						alert("奖项数量设置有误请重新设置");
+					}
+					else {
+						total_prize_number += parseInt(document.getElementById("prize_"+i).value);
+					}
+				}
+				if(!(validate_participant_numbers())){
+					alert("抽奖人员总数有误请重新上设置");
+				}
+				var mytype,v
+					TemO = document.getElementById("form");
+				var newInput = document.createElement("input");
+				newInput.setAttribute("type", "text");
+				newInput.setAttribute("name", "participant");
+				newInput.setAttribute("id", "participant");
+				TemO.appendChild(newInput);
+				var newline = document.createElement("br");
+				TemO.appendChild(newline);
+				var button = document.createElement("button");
+				button.setAttribute("type", "button");
+				button.setAttribute("name", "");
+				button.setAttribute("onclick", "continue_participant_func()");
+				button.setAttribute("id", "continue_participant");
+				button.innerHTML = "输入参与抽奖人员名字，一次输入一个";
+				TemO.appendChild(button);
+				var newline = document.createElement("br");
+				TemO.appendChild(newline);
+				var title = document.createElement("h4");
+				title.setAttribute("id", "participant_title");
+				TemO.appendChild(title);
+				TemO.appendChild(newInput);
+				var newline = document.createElement("br");
+			}
+			function continue_participant_func() {
+				var participant_numbers = parseInt(document.getElementById("participant_numbers").value);
+				var participant_string = document.getElementById("continue_participant").name;
+				var tmp = document.getElementById("participant").value;
+				if (participant_string==="") {
+					participant_string = "1"+";"+tmp;
+					document.getElementById("participant_title").innerHTML = "参与抽奖人员名字：" + tmp + "已经输入，请继续输入抽奖人员姓名";
+					document.getElementById("participant").value = ""
+					document.getElementById("continue_participant").name = participant_string;
+				}
+				else{
+					var participant_string_array = participant_string.split(";");
+					participant_string_array.push(tmp);
+					document.getElementById("participant").value = ""
+					participant_string_array[0] = String(parseInt(participant_string_array[0]) + 1);
+					document.getElementById("participant").value = ""
+					document.getElementById("continue_participant").name = participant_string_array.join(";");
+					if (parseInt(participant_string_array[0]) === participant_numbers) {
+					document.getElementById("participant_title").innerHTML = "参与抽奖人员名字：" + tmp + "已经输入，请提交抽奖设置";
+					document.getElementById("participant").value = participant_string_array.join(";");
+					var mytype,
+					TemO = document.getElementById("form");
+					var button = document.createElement("input");
+					button.setAttribute("type", "submit");
+					button.setAttribute("name", "submit");
+					button.innerHTML = "提交抽奖设置";
+					TemO.appendChild(button);
+					}
+					else{
+						document.getElementById("participant_title").innerHTML = "参与抽奖人员名字：" + tmp + "已经输入，请继续输入抽奖人员姓名";
+					}
+				}
+			}
+			function submit_data() {
+				var participant_string = document.getElementById("continue_participant").name;
+				document.getElementById("participant").value = participant_string;
+			}
+		</script>
+	</body>
+</html>

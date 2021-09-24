@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>设置抽奖信息</title>
+	</head>
+	<body>
+        <form method="post">
+            请输入奖项个数<input type="text" name="prize_number" id = "prize_number">
+			<button type="button" name="continue"  onclick="set_prize()">继续</button>
+			<div id="prize_settings">
+			</div>
+			<div id="participant_settings">
+			</div>
+        </form>
+		<script type="text/javascript">
+		function set_prize(){
+			var prize_number = parseInt(document.getElementById("prize_number").value);
+			for (var i = 1; i <= prize_number; i++) {
+				var mytype,TemO=document.getElementById("prize_settings");
+				var title = document.createElement("h3");
+				title.innerHTML = i+"奖项数量设置";
+				TemO.appendChild(title);
+				var newInput = document.createElement("input");
+				newInput.type="text";
+				newInput.name="prize"+i;
+				TemO.appendChild(newInput);
+				var newline= document.createElement("br");
+				TemO.appendChild(newline);
+			}
+			
+		}
+		</script>
+	</body>
+</html>

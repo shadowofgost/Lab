@@ -1,0 +1,115 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-23 16:23:50
+ * @LastEditTime: 2021-09-23 17:43:12
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \Lab\APPS\Lab1\Templates\index.html
+-->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>设置抽奖信息</title>
+	</head>
+	<body>
+		<form method="post" action="https://localhost:8080/">
+			请输入奖项个数<input
+				type="text"
+				name="prize_number"
+				id="prize_number"
+			/>
+			<button type="button" name="continue" onclick="set_prize()">
+				继续
+			</button>
+			<div id="prize_settings"></div>
+			<div id="participant_settings"></div>
+		</form>
+		<script type="text/javascript">
+			function set_prize() {
+				var prize_number = parseInt(
+					document.getElementById("prize_number").value
+				);
+				console.log(prize_number);
+				for (var i = 1; i <= prize_number; i++) {
+					var mytype,
+						TemO = document.getElementById("prize_settings");
+					var title = document.createElement("h4");
+					title.innerHTML = i + "等奖项数量设置";
+					TemO.appendChild(title);
+					var newInput = document.createElement("input");
+					newInput.setAttribute("type", "text");
+					newInput.setAttribute("name", "prize_" + i);
+					newInput.setAttribute("id", "prize_" + i);
+					newInput.setAttribute("value", "0");
+					newInput.setAttribute("onchange","validate_prize_number("+i+")");
+					TemO.appendChild(newInput);
+					var newline = document.createElement("br");
+					TemO.appendChild(newline);
+					var error= document.createElement("h4");
+					error.setAttribute("id", "prize_error_"+i);
+					TemO.appendChild(error);
+					var title = document.createElement("h4");
+					title.innerHTML = i + "等奖获奖概率设置";
+					TemO.appendChild(title);
+					var newInput = document.createElement("input");
+					newInput.setAttribute("type", "text");
+					newInput.setAttribute("name", "prize_random_" + i);
+					newInput.setAttribute("id", "prize_random_" + i);
+					newInput.setAttribute("value", "0");
+					newInput.setAttribute("onchange","validate_prize_random("+i+")");
+					TemO.appendChild(newInput);
+					var newline = document.createElement("br");
+					TemO.appendChild(newline);
+					var error= document.createElement("h4");
+					error.setAttribute("id", "prize_random_error_"+i);
+					TemO.appendChild(error);
+				}
+				var participant_numbers_error= document.createElement("h4");
+				participant_numbers_error.setAttribute("id", "participant_numbers_error");
+				TemO.appendChild(participant_numbers_error);
+				var button = document.createElement("button");
+				button.setAttribute("type", "submit");
+				button.setAttribute("name", "submit");
+				button.setAttribute("onclick", "check()");
+				button.innerHTML = "继续";
+				TemO.appendChild(button);
+			}
+			function validate_prize_number(i) {
+				var prize_number = parseInt(document.getElementById("prize_"+i).value);
+				if (prize_number === 0) {
+					var prize_error = document.getElementById("prize_error_"+i);
+					prize_error.innerHTML = "奖项数量不为0";
+					return false;
+				}
+				if (Object.is(prize_number, NaN)) {
+					var prize_error = document.getElementById("prize_error_"+i);
+					prize_error.innerHTML = "请输入正确字符";
+					return false;
+				}
+				return true;
+			}
+            function validate_prize_random(i){
+                var prize_random = parseFloat(document.getElementById("prize_random_"+i).value);
+                if (prize_random>=0 && prize_random<1) {
+                    return true;
+                }
+                else{
+                    var prize_error = document.getElementById("prize_random_error_"+i);
+                    prize_error.innerHTML = "请输入正确的获奖概率，获奖概率大于等于0，小于1"
+                }
+			}
+			function check() {
+				var prize_number = parseInt(document.getElementById("prize_number").value);
+				var count = 0;
+				for (var i = 1; i <= prize_number; i++) {
+					var prize_random = parseFloat(document.getElementById("prize_random_"+i).value);
+					count += prize_random;
+				}
+				if (count>1) {
+					alert("获奖概率之和不能大于1");
+					return false;
+				}
+			}
+		</script>
+	</body>
+</html>
